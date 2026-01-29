@@ -1,0 +1,45 @@
+####################################
+# OS / Editor
+####################################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+####################################
+# Logs
+####################################
+*.log
+
+####################################
+# Backend (Spring Boot)
+####################################
+backend/.gradle/
+backend/build/
+backend/out/
+backend/*.iml
+
+# application configs (secrets 제외)
+backend/src/main/resources/application-*.yml
+!backend/src/main/resources/application-docker.yml
+
+####################################
+# Frontend (Vite / React)
+####################################
+frontend/node_modules/
+frontend/dist/
+
+# env files
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+####################################
+# Test / Coverage
+####################################
+**/coverage/
+
+####################################
+# Docker
+####################################
+**/.dockerignore

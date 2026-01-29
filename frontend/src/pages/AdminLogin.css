@@ -1,0 +1,36 @@
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-login-container {
+  background: white;
+  padding: 48px 56px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.login-desc {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.google-login-btn {
+  width: 220px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.google-login-btn:hover {
+  transform: scale(1.03);
+}
