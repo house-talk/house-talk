@@ -3,6 +3,7 @@ package com.team.house.housetalk.auth.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class AuthController {
 
+    @Value("${cookie.secure}")
+    private boolean cookieSecure;
     /**
      * 로그아웃 API
      *
@@ -24,7 +27,7 @@ public class AuthController {
 
         Cookie cookie = new Cookie("accessToken", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // 배포 시 true
+        cookie.setSecure(cookieSecure); // 배포 시 true
         cookie.setPath("/");
         cookie.setMaxAge(0);     // 즉시 만료
 

@@ -8,6 +8,7 @@ import com.team.house.housetalk.tenant.service.TenantService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class TenantController {
 
     private final TenantService tenantService;
     private final TenantRepository tenantRepository;
+
+    @Value("${cookie.secure}")
+    private boolean cookieSecure;
+
 
     /* ==================================================
        ⭐ 0️⃣ 세입자 인증 (기존 / 신규 공통)
@@ -38,7 +43,7 @@ public class TenantController {
         Cookie cookie = new Cookie("tenantCode", tenant.getTenantCode());
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(false);         // 로컬에서는 false
+        cookie.setSecure(cookieSecure);         // 로컬에서는 false
         cookie.setMaxAge(60 * 60 * 24 * 30); // 30일
         response.addCookie(cookie);
     }
@@ -109,7 +114,7 @@ public class TenantController {
         Cookie cookie = new Cookie("tenantCode", "");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(false);
+        cookie.setSecure(cookieSecure);
         cookie.setMaxAge(0); // 즉시 삭제
         response.addCookie(cookie);
     }
