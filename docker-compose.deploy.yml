@@ -34,8 +34,8 @@ services:
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE: profile,email
 
       # (선택) JPA 설정 - 필요시 주석 해제
-      # SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      # SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
 
     ports:
       - "8080:8080"
