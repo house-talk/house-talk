@@ -1,0 +1,46 @@
+name: Build & Push Backend Image to ECR
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+
+permissions:
+  id-token: write   # OIDC 필수
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: housetalk-backend
+  AWS_ACCOUNT_ID: 929368845727
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          ECR_URI=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}
+
+          docker build \
+            -t $ECR_URI:$IMAGE_TAG \
+            -t $ECR_URI:latest \
+            ./backend
+
+          docker push $ECR_URI:$IMAGE_TAG
+          docker push $ECR_URI:latest
