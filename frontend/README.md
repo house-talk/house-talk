@@ -41,3 +41,5 @@ HOUSE-TALK Frontend는 관리자와 세입자가 사용하는 웹 UI를 담당�
 
 ```env
 VITE_API_BASE_URL=http://localhost:8080
+
+test
