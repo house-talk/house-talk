@@ -12,6 +12,12 @@ services:
       - .env
     environment:
       SPRING_PROFILES_ACTIVE: prod
+    
+    # ✅ [핵심 수정] 이 부분이 있어야 호스트의 Nginx가 localhost:8080으로 접속 가능합니다.
+    # 형식: "호스트포트:컨테이너포트"
+    ports:
+      - "8080:8080"
+
     depends_on:
       - mysql
     volumes:
