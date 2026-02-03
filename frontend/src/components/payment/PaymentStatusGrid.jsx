@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import PaymentStatusCard from "./PaymentStatusCard";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * ✅ Grid 책임
@@ -49,7 +48,7 @@ export default function PaymentStatusGrid({ statuses, paymentPeriodId }) {
     try {
       // 1️⃣ 토글 API
       await fetch(
-        `${API_BASE}/api/admin/payments/statuses/${status.paymentStatusId}/toggle`,
+        `/api/admin/payments/statuses/${status.paymentStatusId}/toggle`,
         {
           method: "POST",
           credentials: "include",
@@ -58,7 +57,7 @@ export default function PaymentStatusGrid({ statuses, paymentPeriodId }) {
 
       // 2️⃣ 재조회
       const res = await fetch(
-        `${API_BASE}/api/admin/payments/periods/${paymentPeriodId}/statuses`,
+        `/api/admin/payments/periods/${paymentPeriodId}/statuses`,
         { credentials: "include" }
       );
       if (!res.ok) throw new Error("납부 상태 재조회 실패");

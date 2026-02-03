@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import NoticeList from "../notice/NoticeList";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 세입자 전용 건물 상세 페이지
@@ -30,7 +29,7 @@ export default function TenantBuildingDetail() {
       setLoading(true);
 
       const res = await fetch(
-        `${API_BASE_URL}/api/tenant/buildings/${tenantBuildingId}`,
+        `/api/tenant/buildings/${tenantBuildingId}`,
         {
           credentials: "include",
         }

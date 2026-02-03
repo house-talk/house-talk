@@ -1,10 +1,9 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 건물 목록 조회
  */
 export async function getBuildings() {
-  const res = await fetch(`${API_BASE_URL}/api/buildings`, {
+  const res = await fetch(`/api/buildings`, {
     credentials: "include",
   });
 
@@ -22,7 +21,7 @@ export async function getBuildings() {
  * 건물 생성
  */
 export async function createBuilding(data) {
-  const res = await fetch(`${API_BASE_URL}/api/buildings`, {
+  const res = await fetch(`/api/buildings`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +42,7 @@ export async function createBuilding(data) {
  */
 export async function updateBuilding(buildingId, data) {
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}`,
+    `/api/buildings/${buildingId}`,
     {
       method: "PUT",
       headers: {
@@ -66,7 +65,7 @@ export async function updateBuilding(buildingId, data) {
  */
 export async function deleteBuilding(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}`,
+    `/api/buildings/${buildingId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -83,7 +82,7 @@ export async function deleteBuilding(buildingId) {
  */
 export async function fetchBuilding(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}`,
+    `/api/buildings/${buildingId}`,
     {
       credentials: "include",
     }

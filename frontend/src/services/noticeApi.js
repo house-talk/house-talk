@@ -1,4 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 공지 목록 조회 (기존 - 유지)
@@ -6,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  */
 export async function fetchNotices(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}/notices`,
+    `/api/buildings/${buildingId}/notices`,
     {
       credentials: "include",
     }
@@ -31,7 +30,7 @@ export async function searchNotices(buildingId, { keyword = "", page = 1, size =
   params.append("size", size);
 
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}/notices/search?${params.toString()}`,
+    `/api/buildings/${buildingId}/notices/search?${params.toString()}`,
     {
       credentials: "include",
     }
@@ -50,7 +49,7 @@ export async function searchNotices(buildingId, { keyword = "", page = 1, size =
  */
 export async function createNotice(buildingId, formData) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/buildings/${buildingId}/notices`,
+    `/api/admin/buildings/${buildingId}/notices`,
     {
       method: "POST",
       credentials: "include",
@@ -70,7 +69,7 @@ export async function createNotice(buildingId, formData) {
  */
 export async function updateNotice(buildingId, noticeId, formData) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/buildings/${buildingId}/notices/${noticeId}`,
+    `/api/admin/buildings/${buildingId}/notices/${noticeId}`,
     {
       method: "PATCH",
       credentials: "include",
@@ -88,7 +87,7 @@ export async function updateNotice(buildingId, noticeId, formData) {
  */
 export async function deleteNotice(buildingId, noticeId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/buildings/${buildingId}/notices/${noticeId}`,
+    `/api/admin/buildings/${buildingId}/notices/${noticeId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -105,7 +104,7 @@ export async function deleteNotice(buildingId, noticeId) {
  */
 export async function fetchNoticeDetail(buildingId, noticeId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/buildings/${buildingId}/notices/${noticeId}`,
+    `/api/buildings/${buildingId}/notices/${noticeId}`,
     {
       credentials: "include",
     }

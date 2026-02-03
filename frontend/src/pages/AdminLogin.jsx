@@ -1,12 +1,11 @@
 // src/pages/AdminLogin.jsx
 import "./AdminLogin.css";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function AdminLogin() {
   // Google OAuth 로그인 시작
   const handleGoogleLogin = () => {
     window.location.href =
-      `${API_BASE_URL}/oauth2/authorization/google?prompt=select_account`;
+      `/oauth2/authorization/google?prompt=select_account`;
   };
 
   return (

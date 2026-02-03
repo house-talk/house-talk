@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 
 /**
  * 납부 기간 목록 조회 (페이지네이션 대응)
@@ -12,7 +12,7 @@ export const fetchPaymentPeriods = async (
   keyword = ""
 ) => {
   const res = await axios.get(
-    `${API_BASE}/api/admin/buildings/${buildingId}/payments`,
+    `/api/admin/buildings/${buildingId}/payments`,
     {
       params: {
         page,
@@ -30,7 +30,7 @@ export const fetchPaymentPeriods = async (
  */
 export const createPaymentPeriod = async (buildingId, body) => {
   const res = await axios.post(
-    `${API_BASE}/api/admin/buildings/${buildingId}/payments`,
+    `/api/admin/buildings/${buildingId}/payments`,
     body,
     {
       withCredentials: true,
@@ -44,7 +44,7 @@ export const createPaymentPeriod = async (buildingId, body) => {
  */
 export const fetchPaymentStatuses = async (paymentPeriodId) => {
   const res = await axios.get(
-    `${API_BASE}/api/admin/payments/periods/${paymentPeriodId}/statuses`,
+    `/api/admin/payments/periods/${paymentPeriodId}/statuses`,
     {
       withCredentials: true,
     }

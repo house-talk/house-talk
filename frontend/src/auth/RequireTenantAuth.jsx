@@ -2,8 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 export default function RequireTenantAuth() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +14,7 @@ export default function RequireTenantAuth() {
     if (calledRef.current) return;
     calledRef.current = true;
 
-    fetch(`${API_BASE_URL}/api/tenant/homes`, {
+    fetch(`/api/tenant/homes`, {
       credentials: "include",
     })
       .then((res) => {

@@ -1,11 +1,11 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 /**
  * 승인 대기 세입자 목록 조회
  */
 export async function fetchPendingTenants(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/tenants/pending?buildingId=${buildingId}`,
+    `/api/admin/tenants/pending?buildingId=${buildingId}`,
     {
       credentials: "include", // ⭐ 관리자 JWT
     }
@@ -23,7 +23,7 @@ export async function fetchPendingTenants(buildingId) {
  */
 export async function approveTenant(requestId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/tenants/${requestId}/approve`,
+    `/api/admin/tenants/${requestId}/approve`,
     {
       method: "POST",
       credentials: "include",
@@ -44,7 +44,7 @@ export async function approveTenant(requestId) {
  */
 export async function rejectTenant(requestId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/tenants/${requestId}`,
+    `/api/admin/tenants/${requestId}`,
     {
       method: "DELETE",
       credentials: "include",

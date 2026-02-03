@@ -1,4 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 관리자용 초대코드 발급
@@ -6,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  */
 export async function createInvite(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/invites?buildingId=${buildingId}`,
+    `/api/admin/invites?buildingId=${buildingId}`,
     {
       method: "POST",
       credentials: "include", // ⭐ 관리자 JWT 쿠키
@@ -27,7 +26,7 @@ export async function createInvite(buildingId) {
  */
 export async function fetchInvite(buildingId) {
   const res = await fetch(
-    `${API_BASE_URL}/api/admin/invites?buildingId=${buildingId}`,
+    `/api/admin/invites?buildingId=${buildingId}`,
     {
       method: "GET",
       credentials: "include", // ⭐ 관리자 JWT 쿠키
@@ -48,7 +47,7 @@ export async function fetchInvite(buildingId) {
  */
 export async function validateInvite(inviteCode) {
   const res = await fetch(
-    `${API_BASE_URL}/api/tenant/invites/validate`,
+    `/api/tenant/invites/validate`,
     {
       method: "POST",
       headers: {

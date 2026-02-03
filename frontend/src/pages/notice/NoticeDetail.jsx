@@ -153,7 +153,7 @@ export default function NoticeDetail({ isAdmin = false }) {
           {imageFiles.map((file, idx) => (
             <img
               key={idx}
-              src={`${API_BASE_URL}${file.url}`}
+              src={`${file.url}`}
               alt={file.name}
               style={{
                 maxWidth: "100%",
@@ -201,7 +201,7 @@ export default function NoticeDetail({ isAdmin = false }) {
               >
                 <span>⬇</span>
                 <a
-                  href={`${API_BASE_URL}${file.url}`}
+                  href={`${file.url}`}
                   download={file.name}
                   style={{
                     color: "#1d4ed8",

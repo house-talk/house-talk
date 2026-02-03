@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PaymentStatusGrid from "../../components/payment/PaymentStatusGrid";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 
 export default function PaymentPeriodDetailPage() {
   const { buildingId, paymentPeriodId } = useParams();
@@ -18,7 +18,7 @@ export default function PaymentPeriodDetailPage() {
 
         // 1️⃣ 납부 기간 단건 조회
         const periodRes = await fetch(
-          `${API_BASE}/api/admin/buildings/${buildingId}/payments/periods/${paymentPeriodId}`,
+          `/api/admin/buildings/${buildingId}/payments/periods/${paymentPeriodId}`,
           { credentials: "include" }
         );
         if (!periodRes.ok) throw new Error("납부 기간 조회 실패");
@@ -26,7 +26,7 @@ export default function PaymentPeriodDetailPage() {
 
         // 2️⃣ 납부 상태 목록 조회
         const statusRes = await fetch(
-          `${API_BASE}/api/admin/payments/periods/${paymentPeriodId}/statuses`,
+          `/api/admin/payments/periods/${paymentPeriodId}/statuses`,
           { credentials: "include" }
         );
         if (!statusRes.ok) throw new Error("납부 상태 조회 실패");

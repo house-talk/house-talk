@@ -7,7 +7,6 @@ import {
   deleteBuilding,
 } from "../services/buildingApi";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState(null);
@@ -22,7 +21,7 @@ export default function AdminDashboard() {
   const [deleteInput, setDeleteInput] = useState("");
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/admin/me`, {
+    fetch(`/api/admin/me`, {
       credentials: "include",
     })
       .then((res) => {
@@ -77,7 +76,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    fetch(`${API_BASE_URL}/api/auth/logout`, {
+    fetch(`/api/auth/logout`, {
       method: "POST",
       credentials: "include",
     }).finally(() => {

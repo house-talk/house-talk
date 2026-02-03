@@ -1,11 +1,10 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 세입자 - 내가 승인된 집 목록 조회
  */
 export async function fetchMyHouses() {
   const res = await fetch(
-    `${API_BASE_URL}/api/tenant/homes`,
+    `/api/tenant/homes`,
     {
       credentials: "include",
     }
@@ -23,7 +22,7 @@ export async function fetchMyHouses() {
  */
 export async function joinHouse({ inviteCode, name, phoneNumber, unitNumber }) {
   const res = await fetch(
-    `${API_BASE_URL}/api/tenant/join`,
+    `/api/tenant/join`,
     {
       method: "POST",
       headers: {
@@ -55,7 +54,7 @@ export async function joinHouse({ inviteCode, name, phoneNumber, unitNumber }) {
  * - 성공 시: tenantCode 쿠키 발급
  */
 export async function authenticateTenant({ name, phoneNumber, password, newUser }) {
-  const res = await fetch(`${API_BASE_URL}/api/tenant/auth`, {
+  const res = await fetch(`/api/tenant/auth`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -83,7 +82,7 @@ export async function authenticateTenant({ name, phoneNumber, password, newUser 
  * 👉 proxy 경로(/api) 사용
  */
 export async function fetchTenantMe() {
-  const res = await fetch(`${API_BASE_URL}/api/tenant/me`, {
+  const res = await fetch(`/api/tenant/me`, {
     credentials: "include",
   });
 

@@ -6,7 +6,6 @@ import {
   fetchTenantMe,
 } from "../../services/tenantHouseApi";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function TenantHomePage() {
   const navigate = useNavigate(); // ⭐ 추가
@@ -45,7 +44,7 @@ export default function TenantHomePage() {
   // ⭐ 로그아웃
   const handleLogout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/tenant/logout`, {
+      await fetch(`/api/tenant/logout`, {
         method: "POST",
         credentials: "include",
       });

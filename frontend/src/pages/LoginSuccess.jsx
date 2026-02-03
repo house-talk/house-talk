@@ -2,13 +2,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function LoginSuccess() {
   const navigate = useNavigate();
 
   useEffect(() => {
     // ✅ 쿠키 기반 인증 확인
-    fetch(`${API_BASE_URL}/api/admin/me`, {
+    fetch(`/api/admin/me`, {
       credentials: "include", // ⭐ 쿠키 인증 핵심
     })
       .then((res) => {

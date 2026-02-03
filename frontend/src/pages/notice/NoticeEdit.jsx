@@ -6,7 +6,6 @@ import {
   deleteNotice,
 } from "../../services/noticeApi";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function NoticeEdit() {
   const { buildingId, noticeId } = useParams();
@@ -197,10 +196,10 @@ const otherFiles = existingFiles.filter(file =>
             }}
           >
             <img
-              src={`${API_BASE_URL}${file.url}`}
+              src={`${file.url}`}
               alt={file.name}
               onClick={() =>
-                setPreviewImage(`${API_BASE_URL}${file.url}`)
+                setPreviewImage(`${file.url}`)
               }
               style={{
                 width: "100%",
@@ -250,7 +249,7 @@ const otherFiles = existingFiles.filter(file =>
             }}
           >
             <a
-              href={`${API_BASE_URL}${file.url}`}
+              href={`${file.url}`}
               target="_blank"
               rel="noreferrer"
             >
