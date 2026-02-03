@@ -5,7 +5,7 @@ services:
   # Backend (Spring Boot)
   # =========================
   backend:
-    image: housetalk-backend:latest
+    image: 929368845727.dkr.ecr.ap-northeast-2.amazonaws.com/housetalk-backend:latest
     container_name: housetalk-backend
     restart: always
     env_file:
