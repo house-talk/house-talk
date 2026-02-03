@@ -14,21 +14,25 @@ services:
       # 프로필 설정
       SPRING_PROFILES_ACTIVE: prod
 
+      # 쿠키 보안 설정 (http 환경이라 false)
       COOKIE_SECURE: "false"
       
-      # ✅ [추가됨] DB 연결 정보 필수!
-      # mysql 컨테이너 이름을 호스트로 사용합니다.
-      # housetalk은 생성할 DB 이름(스키마)입니다.
+      # =================================================
+      # 1. DB 연결 정보 (필수)
+      # =================================================
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/housetalk?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
-      
-      # DB 계정 (기본 root 사용)
       SPRING_DATASOURCE_USERNAME: root
-
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       
-      # DB 비밀번호 (.env 파일의 변수를 그대로 사용)
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      
+      # =================================================
+      # 2. 구글 로그인 설정 (필수 - 안 넣으면 서버 죽음)
+      # .env 파일에 있는 변수 값을 가져와서 주입합니다.
+      # =================================================
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE: profile,email
+
       # (선택) JPA 설정 - 필요시 주석 해제
       # SPRING_JPA_HIBERNATE_DDL_AUTO: update
       # SPRING_JPA_SHOW_SQL: "true"
