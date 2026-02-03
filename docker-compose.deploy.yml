@@ -37,18 +37,6 @@ services:
       - housetalk-net
 
   # =========================
-  # Frontend (Nginx Static)
-  # =========================
-  frontend:
-    image: housetalk-frontend:latest
-    container_name: housetalk-frontend
-    restart: always
-    depends_on:
-      - backend
-    networks:
-      - housetalk-net
-
-  # =========================
   # Nginx Reverse Proxy
   # =========================
   nginx:
@@ -64,7 +52,6 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     depends_on:
-      - frontend
       - backend
     networks:
       - housetalk-net
