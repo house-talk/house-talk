@@ -21,6 +21,8 @@ services:
       
       # DB 계정 (기본 root 사용)
       SPRING_DATASOURCE_USERNAME: root
+
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       
       # DB 비밀번호 (.env 파일의 변수를 그대로 사용)
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
