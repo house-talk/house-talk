@@ -27,3 +27,4 @@ EXPOSE 8080
 
 # ❗ profile 지정 없음
 ENTRYPOINT ["java", "-jar", "app.jar"]
+  
