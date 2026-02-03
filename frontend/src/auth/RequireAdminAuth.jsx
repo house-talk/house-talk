@@ -2,15 +2,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 export default function RequireAdminAuth() {
   const navigate = useNavigate();
   const location = useLocation();
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-  fetch(`${API_BASE_URL}/api/admin/me`, {
+  fetch(`/api/admin/me`, {
     credentials: "include",
   })
     .then((res) => {
