@@ -13,9 +13,6 @@ services:
     environment:
       # 프로필 설정
       SPRING_PROFILES_ACTIVE: prod
-
-      # 쿠키 보안 설정 (http 환경이라 false)
-      COOKIE_SECURE: "false"
       
       # =================================================
       # 1. DB 연결 정보 (필수)
