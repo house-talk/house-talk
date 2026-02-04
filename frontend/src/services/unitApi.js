@@ -5,7 +5,7 @@
  */
 export async function fetchUnits(buildingId) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units/status`,
+    `/api/buildings/${buildingId}/units/status`,
     {
       method: "GET",
       credentials: "include", // ⭐ JWT 쿠키 인증
@@ -24,7 +24,7 @@ export async function fetchUnits(buildingId) {
  */
 export async function createUnit(buildingId, data) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units`,
+    `/api/buildings/${buildingId}/units`,
     {
       method: "POST",
       headers: {
@@ -47,7 +47,7 @@ export async function createUnit(buildingId, data) {
  */
 export async function updateUnit(buildingId, unitId, data) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units/${unitId}`,
+    `/api/buildings/${buildingId}/units/${unitId}`,
     {
       method: "PATCH",
       headers: {
@@ -70,7 +70,7 @@ export async function updateUnit(buildingId, unitId, data) {
  */
 export async function deleteUnit(buildingId, unitId) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units/${unitId}`,
+    `/api/buildings/${buildingId}/units/${unitId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -87,7 +87,7 @@ export async function deleteUnit(buildingId, unitId) {
  */
 export async function updateUnitOrder(buildingId, orders) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units/order`,
+    `/api/buildings/${buildingId}/units/order`,
     {
       method: "PATCH",
       headers: {
@@ -110,7 +110,7 @@ export async function updateUnitOrder(buildingId, orders) {
  */
 export async function createUnitsBulk(buildingId, data) {
   const res = await fetch(
-    `api/buildings/${buildingId}/units/bulk`,
+    `/api/buildings/${buildingId}/units/bulk`,
     {
       method: "POST",
       headers: {
