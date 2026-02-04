@@ -14,6 +14,7 @@ services:
       # 프로필 설정
       SPRING_PROFILES_ACTIVE: prod
 
+      FILE_UPLOAD_DIR: /data/uploads
       COOKIE_SECURE: "true"
 
       APP_OAUTH2_REDIRECT_URI: "https://housetalk.cloud/admin"
