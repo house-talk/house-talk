@@ -13,6 +13,8 @@ services:
     environment:
       # 프로필 설정
       SPRING_PROFILES_ACTIVE: prod
+
+      COOKIE_SECURE: "true"
       
       # =================================================
       # 1. DB 연결 정보 (필수)
