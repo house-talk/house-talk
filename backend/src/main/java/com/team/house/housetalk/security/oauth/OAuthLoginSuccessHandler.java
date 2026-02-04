@@ -37,6 +37,10 @@ import java.util.Map;
             Authentication authentication
     ) throws IOException, ServletException {
 
+        System.out.println("🔥 OAuthLoginSuccessHandler 진입");
+        System.out.println("🔥 redirectUri = [" + redirectUri + "]");
+
+
         // 1️⃣ OAuth 인증 토큰
         OAuth2AuthenticationToken authToken =
                 (OAuth2AuthenticationToken) authentication;
