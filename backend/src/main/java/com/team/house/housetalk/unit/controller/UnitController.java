@@ -1,15 +1,18 @@
 package com.team.house.housetalk.unit.controller;
 
 import com.team.house.housetalk.admin.entity.Admin;
+import com.team.house.housetalk.admin.repository.AdminRepository; // ✅ 추가됨
 import com.team.house.housetalk.building.service.BuildingService;
 import com.team.house.housetalk.unit.dto.*;
 import com.team.house.housetalk.unit.entity.Unit;
 import com.team.house.housetalk.unit.service.UnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User; // ✅ 추가됨
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,25 +21,48 @@ public class UnitController {
 
     private final UnitService unitService;
     private final BuildingService buildingService;
+    private final AdminRepository adminRepository; // ✅ DB 조회를 위해 추가
 
     /**
-     * 특정 건물의 세대 목록 조회
+     * 🛡️ 인증 정보에서 안전하게 Admin 객체를 꺼내는 메서드
+     * (JWT 숫자 ID와 구글 로그인 객체 모두 처리)
      */
+    private Admin getAuthenticatedAdmin(Authentication authentication) {
+        if (authentication == null) {
+            throw new IllegalStateException("로그인 정보가 없습니다.");
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        // 1. JWT 로그인 (Long ID인 경우)
+        if (principal instanceof Long adminId) {
+            return buildingService.getAdminById(adminId);
+        }
+
+        // 2. 구글 로그인 (OAuth2User 객체인 경우)
+        else if (principal instanceof OAuth2User oauthUser) {
+            Map<String, Object> attributes = oauthUser.getAttributes();
+            String providerId = (String) attributes.get("sub"); // 구글의 고유 ID
+
+            return adminRepository.findByProviderAndProviderUserId("google", providerId)
+                    .orElseThrow(() -> new IllegalStateException("회원 정보를 찾을 수 없습니다."));
+        }
+
+        throw new IllegalStateException("지원하지 않는 인증 방식입니다.");
+    }
+
     /**
-     * ⭐ 세대 상태 조회 (거주 여부 + 세입자 정보 포함)
+     * 세대 상태 조회
      */
     @GetMapping("/status")
     public List<UnitStatusResponse> getUnitStatuses(
             @PathVariable Long buildingId,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
-
-        // 🔥 핵심: UnitService의 새 메서드 사용
+        // ✅ 수정됨: 안전하게 Admin 가져오기
+        Admin admin = getAuthenticatedAdmin(authentication);
         return unitService.getUnitStatuses(buildingId, admin);
     }
-
 
     /**
      * 세대 생성
@@ -47,8 +73,8 @@ public class UnitController {
             @RequestBody UnitCreateRequest request,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
+        // ✅ 수정됨
+        Admin admin = getAuthenticatedAdmin(authentication);
 
         Unit unit = unitService.createUnit(
                 buildingId,
@@ -63,7 +89,7 @@ public class UnitController {
     }
 
     /**
-     * ⭐ 여러 세대 한 번에 생성
+     * 여러 세대 한 번에 생성
      */
     @PostMapping("/bulk")
     public void createUnitsBulk(
@@ -71,8 +97,8 @@ public class UnitController {
             @RequestBody UnitBulkCreateRequest request,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
+        // ✅ 수정됨
+        Admin admin = getAuthenticatedAdmin(authentication);
 
         unitService.createUnitsBulk(
                 buildingId,
@@ -85,9 +111,8 @@ public class UnitController {
         );
     }
 
-
     /**
-     * 세대 수정 (부분 수정)
+     * 세대 수정
      */
     @PatchMapping("/{unitId}")
     public UnitResponse updateUnit(
@@ -96,8 +121,8 @@ public class UnitController {
             @RequestBody UnitUpdateRequest request,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
+        // ✅ 수정됨
+        Admin admin = getAuthenticatedAdmin(authentication);
 
         Unit unit = unitService.updateUnit(
                 unitId,
@@ -120,14 +145,13 @@ public class UnitController {
             @PathVariable Long unitId,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
-
+        // ✅ 수정됨
+        Admin admin = getAuthenticatedAdmin(authentication);
         unitService.deleteUnit(unitId, admin);
     }
 
     /**
-     * ⭐ 세대 순서(orderIndex) 변경
+     * 세대 순서 변경
      */
     @PatchMapping("/order")
     public void updateUnitOrder(
@@ -135,8 +159,8 @@ public class UnitController {
             @RequestBody UnitOrderUpdateRequest request,
             Authentication authentication
     ) {
-        Long adminId = (Long) authentication.getPrincipal();
-        Admin admin = buildingService.getAdminById(adminId);
+        // ✅ 수정됨
+        Admin admin = getAuthenticatedAdmin(authentication);
 
         unitService.updateUnitOrder(
                 buildingId,
@@ -144,5 +168,4 @@ public class UnitController {
                 request.getOrders()
         );
     }
-
 }
