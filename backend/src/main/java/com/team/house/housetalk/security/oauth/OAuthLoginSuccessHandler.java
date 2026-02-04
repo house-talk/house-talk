@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.Map;
@@ -23,6 +24,11 @@ import java.util.Map;
 
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
+    @Value("${app.oauth2.redirect-uri}")
+    private String redirectUri;
+
+    @Value("${cookie.secure}")
+    private boolean cookieSecure;
 
     @Override
     public void onAuthenticationSuccess(
@@ -113,11 +119,11 @@ import java.util.Map;
 
         // 로컬 개발 환경에서는 false
         // 운영(HTTPS)에서는 반드시 true
-        jwtCookie.setSecure(false);
+        jwtCookie.setSecure(cookieSecure);
 
         response.addCookie(jwtCookie);
 
         // 🔟 프론트로 리다이렉트 (토큰 전달 x)
-        response.sendRedirect("http://localhost:5173/admin");
+        response.sendRedirect(redirectUri);
     }
 }
