@@ -1,7 +1,7 @@
 package com.team.house.housetalk.building.controller;
 
 import com.team.house.housetalk.admin.entity.Admin;
-import com.team.house.housetalk.admin.repository.AdminRepository; // 레포지토리 추가
+import com.team.house.housetalk.admin.repository.AdminRepository;
 import com.team.house.housetalk.building.dto.BuildingCreateRequest;
 import com.team.house.housetalk.building.entity.BuildingEntity;
 import com.team.house.housetalk.building.service.BuildingService;
@@ -23,49 +23,37 @@ import java.util.stream.Collectors;
 public class BuildingController {
 
     private final BuildingService buildingService;
-    private final AdminRepository adminRepository; // Admin 정보를 직접 찾기 위해 추가
+    private final AdminRepository adminRepository;
 
-    /**
-     * ✅ 안전하게 Admin ID를 추출하는 헬퍼 메서드
-     * (JWT와 세션 로그인 모두 대응)
-     */
+    // ✅ 안전한 인증 정보 추출 메서드 (필수!)
     private Admin getAuthenticatedAdmin(Authentication authentication) {
         if (authentication == null) {
             throw new IllegalStateException("로그인 정보가 없습니다.");
         }
-
         Object principal = authentication.getPrincipal();
-        Long adminId = null;
 
-        // 1. JWT (Long 타입일 때)
-        if (principal instanceof Long id) {
-            adminId = id;
+        // JWT (Long)
+        if (principal instanceof Long) {
+            return buildingService.getAdminById((Long) principal);
         }
-        // 2. 구글 로그인 세션 (OAuth2User 타입일 때)
-        else if (principal instanceof OAuth2User oauthUser) {
-            Map<String, Object> attributes = oauthUser.getAttributes();
-            String providerId = (String) attributes.get("sub");
-            // 구글 ID로 Admin 찾기
-            return adminRepository.findByProviderAndProviderUserId("google", providerId)
+        // OAuth2 (Google User)
+        if (principal instanceof OAuth2User) {
+            String googleId = (String) ((OAuth2User) principal).getAttributes().get("sub");
+            return adminRepository.findByProviderAndProviderUserId("google", googleId)
                     .orElseThrow(() -> new IllegalStateException("회원 정보를 찾을 수 없습니다."));
         }
-
-        if (adminId != null) {
-            return buildingService.getAdminById(adminId);
-        }
-
-        throw new IllegalStateException("인증 타입이 올바르지 않습니다: " + principal.getClass().getName());
+        throw new IllegalStateException("인증 타입 오류");
     }
 
     /**
-     * 로그인한 관리자가 관리하는 건물 목록 조회
+     * 내 건물 목록 조회 (DTO 변환 적용!)
      */
     @GetMapping
     public ResponseEntity<List<BuildingResponse>> getMyBuildings(Authentication authentication) {
         Admin admin = getAuthenticatedAdmin(authentication);
         List<BuildingEntity> buildings = buildingService.getBuildingsByAdmin(admin);
 
-        // 엔티티 -> DTO 변환 후 반환
+        // 엔티티 리스트를 DTO 리스트로 변환 (핵심!)
         List<BuildingResponse> response = buildings.stream()
                 .map(BuildingResponse::from)
                 .collect(Collectors.toList());
@@ -82,7 +70,6 @@ public class BuildingController {
             Authentication authentication
     ) {
         Admin admin = getAuthenticatedAdmin(authentication);
-
         BuildingEntity building = BuildingEntity.create(
                 admin,
                 request.getName(),
@@ -90,9 +77,8 @@ public class BuildingController {
                 request.getTotalFloors(),
                 request.getTotalUnits()
         );
-
-        BuildingEntity savedBuilding = buildingService.createBuilding(building);
-        return ResponseEntity.ok(BuildingResponse.from(savedBuilding));
+        BuildingEntity saved = buildingService.createBuilding(building);
+        return ResponseEntity.ok(BuildingResponse.from(saved));
     }
 
     /**
@@ -105,16 +91,11 @@ public class BuildingController {
             Authentication authentication
     ) {
         Admin admin = getAuthenticatedAdmin(authentication);
-
-        BuildingEntity updatedBuilding = buildingService.updateBuilding(
-                buildingId,
-                admin,
-                request.getName(),
-                request.getAddress(),
-                request.getTotalFloors(),
-                request.getTotalUnits()
+        BuildingEntity updated = buildingService.updateBuilding(
+                buildingId, admin, request.getName(), request.getAddress(),
+                request.getTotalFloors(), request.getTotalUnits()
         );
-        return ResponseEntity.ok(BuildingResponse.from(updatedBuilding));
+        return ResponseEntity.ok(BuildingResponse.from(updated));
     }
 
     /**
@@ -143,10 +124,7 @@ public class BuildingController {
         return ResponseEntity.ok(BuildingResponse.from(building));
     }
 
-    /**
-     * ✅ 응답용 DTO (Inner Record)
-     * - 엔티티를 직접 반환하지 않기 위해 사용
-     */
+    // ✅ 응답용 DTO (Inner Record)
     public record BuildingResponse(
             Long id,
             String name,
