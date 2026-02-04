@@ -24,8 +24,14 @@ import java.util.Map;
 
     private final AdminRepository adminRepository;
     private final JwtProvider jwtProvider;
-    @Value("${app.oauth2.redirect-uri}")
-    private String redirectUri;
+    private String getRedirectUri() {
+        String envUri = System.getenv("APP_OAUTH2_REDIRECT_URI");
+        if (envUri != null && !envUri.isBlank()) {
+            return envUri;
+        }
+        return "http://localhost:5173/admin"; // 로컬 개발용 기본값
+    }
+
 
     @Value("${cookie.secure}")
     private boolean cookieSecure;
@@ -36,9 +42,6 @@ import java.util.Map;
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException, ServletException {
-
-        System.out.println("🔥 OAuthLoginSuccessHandler 진입");
-        System.out.println("🔥 redirectUri = [" + redirectUri + "]");
 
 
         // 1️⃣ OAuth 인증 토큰
@@ -128,6 +131,7 @@ import java.util.Map;
         response.addCookie(jwtCookie);
 
         // 🔟 프론트로 리다이렉트 (토큰 전달 x)
-        response.sendRedirect(redirectUri);
+        //response.sendRedirect(redirectUri);
+        response.sendRedirect(getRedirectUri());
     }
 }

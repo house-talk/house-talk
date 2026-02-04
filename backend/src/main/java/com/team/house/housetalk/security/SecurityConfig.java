@@ -45,6 +45,10 @@ public class SecurityConfig {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("http://localhost:5173");
                     config.addAllowedOrigin("http://localhost:5174");
+
+                    // 🚀 운영 환경 (실제 도메인 추가 필수!)
+                    config.addAllowedOrigin("https://housetalk.cloud");
+                    config.addAllowedOrigin("https://www.housetalk.cloud");
                     config.addAllowedMethod("*");
                     config.addAllowedHeader("*");
                     config.setAllowCredentials(true);
