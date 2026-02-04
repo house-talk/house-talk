@@ -124,6 +124,9 @@ import java.util.Map;
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(60 * 60); // 1시간
 
+        if (cookieSecure) { // cookieSecure가 true면 운영 환경이라고 가정
+            jwtCookie.setDomain("housetalk.cloud");
+        }
         // 로컬 개발 환경에서는 false
         // 운영(HTTPS)에서는 반드시 true
         jwtCookie.setSecure(cookieSecure);
