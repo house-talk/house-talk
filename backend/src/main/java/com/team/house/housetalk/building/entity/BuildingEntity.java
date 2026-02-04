@@ -27,6 +27,7 @@ public class BuildingEntity {
     /**
      * 이 건물을 관리하는 관리자
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
