@@ -71,6 +71,18 @@ services:
     networks:
       - housetalk-net
 
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: housetalk
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    
+    # ✅ [수정] command를 더 강력하게 변경
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake # 클라이언트가 뭐라 하든 서버 설정 따르게 함
+
 networks:
   housetalk-net:
     driver: bridge
