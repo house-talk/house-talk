@@ -2,12 +2,16 @@ package com.team.house.housetalk.payment.controller;
 
 import com.team.house.housetalk.payment.dto.PaymentPeriodCreateRequest;
 import com.team.house.housetalk.payment.dto.PaymentPeriodResponse;
+import com.team.house.housetalk.payment.dto.PaymentPeriodUpdateRequest;
 import com.team.house.housetalk.payment.entity.PaymentPeriod;
 import com.team.house.housetalk.payment.service.PaymentPeriodService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,4 +71,38 @@ public class PaymentPeriodController {
 
         return PaymentPeriodResponse.from(period, paidRate);
     }
+
+    /**
+     * ✅ 납부 기간 수정 (연도/월/제목)
+     */
+    @PutMapping("/{paymentPeriodId}")
+    public PaymentPeriodResponse updatePaymentPeriod(
+            @PathVariable Long buildingId,
+            @PathVariable Long paymentPeriodId,
+            @RequestBody @Valid PaymentPeriodUpdateRequest request
+    ) {
+        PaymentPeriod updated = paymentPeriodService.updatePaymentPeriod(
+                buildingId,
+                paymentPeriodId,
+                request
+        );
+
+        int paidRate = paymentPeriodService.calculatePaidRate(paymentPeriodId);
+        return PaymentPeriodResponse.from(updated, paidRate);
+    }
+
+    /**
+     * 🗑️ 납부 기간 삭제
+     */
+    @DeleteMapping("/{paymentPeriodId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePaymentPeriod(
+            @PathVariable Long buildingId,
+            @PathVariable Long paymentPeriodId
+    ) {
+        paymentPeriodService.deletePaymentPeriod(buildingId, paymentPeriodId);
+    }
+
+
+
 }

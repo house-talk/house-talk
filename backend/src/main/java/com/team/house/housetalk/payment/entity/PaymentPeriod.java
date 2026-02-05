@@ -95,4 +95,11 @@ public class PaymentPeriod {
         this.month = month;
         this.title = title;
     }
+
+    public void update(int year, int month, String title) {
+        this.year = year;
+        this.month = month;
+        this.title = title;
+    }
+
 }

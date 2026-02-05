@@ -3,6 +3,7 @@ package com.team.house.housetalk.payment.service;
 import com.team.house.housetalk.building.entity.BuildingEntity;
 import com.team.house.housetalk.building.repository.BuildingRepository;
 import com.team.house.housetalk.payment.dto.PaymentPeriodResponse;
+import com.team.house.housetalk.payment.dto.PaymentPeriodUpdateRequest;
 import com.team.house.housetalk.payment.entity.PaymentPeriod;
 import com.team.house.housetalk.payment.entity.PaymentStatus;
 import com.team.house.housetalk.payment.repository.PaymentPeriodRepository;
@@ -14,6 +15,7 @@ import com.team.house.housetalk.unit.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,6 +142,61 @@ public class PaymentPeriodService {
 
         return (int) Math.round((paidCount * 100.0) / statuses.size());
     }
+
+    /**
+     * 납부 기간 수정
+     */
+    @Transactional
+    public PaymentPeriod updatePaymentPeriod(
+            Long buildingId,
+            Long paymentPeriodId,
+            PaymentPeriodUpdateRequest request
+    ) {
+        PaymentPeriod period = paymentPeriodRepository
+                .findByIdAndBuildingId(paymentPeriodId, buildingId)
+                .orElseThrow(() -> new IllegalArgumentException("납부 기간 없음"));
+
+        // ❗ year/month 중복 체크 (자기 자신 제외)
+        boolean exists = paymentPeriodRepository
+                .existsByBuildingIdAndYearAndMonthAndIdNot(
+                        buildingId,
+                        request.getYear(),
+                        request.getMonth(),
+                        paymentPeriodId
+                );
+
+        if (exists) {
+            throw new IllegalStateException("이미 존재하는 납부 기간입니다");
+        }
+
+        period.update(
+                request.getYear(),
+                request.getMonth(),
+                request.getTitle()
+        );
+
+        return period;
+    }
+
+    /**
+     * 납부 기간 삭제
+     */
+    @Transactional
+    public void deletePaymentPeriod(
+            Long buildingId,
+            Long paymentPeriodId
+    ) {
+        PaymentPeriod period = paymentPeriodRepository
+                .findByIdAndBuildingId(paymentPeriodId, buildingId)
+                .orElseThrow(() -> new IllegalArgumentException("납부 기간 없음"));
+
+        // 🔥 payment_status는 cascade + orphanRemoval 로 자동 삭제
+        paymentPeriodRepository.delete(period);
+    }
+
+
+
+
 
 
 
