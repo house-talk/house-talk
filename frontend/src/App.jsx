@@ -1,6 +1,5 @@
 // src/App.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 
 import EntryPage from "./pages/EntryPage";
@@ -23,36 +22,16 @@ import NoticeEdit from "./pages/notice/NoticeEdit";
 // ⭐ payment detail page
 import PaymentPeriodDetailPage from "./pages/payment/PaymentPeriodDetailPage";
 
-// ⭐ 세입자 로그인 여부 확인용
-import { fetchMyHouses } from "./services/tenantHouseApi";
-
 // ⭐ 인증 가드
 import RequireAdminAuth from "./auth/RequireAdminAuth";
 import RequireTenantAuth from "./auth/RequireTenantAuth";
 
 function App() {
-  const [checked, setChecked] = useState(false);
-  const [tenantLoggedIn, setTenantLoggedIn] = useState(false);
-
-  useEffect(() => {
-    fetchMyHouses()
-      .then(() => setTenantLoggedIn(true))
-      .catch(() => setTenantLoggedIn(false))
-      .finally(() => setChecked(true));
-  }, []);
-
-  if (!checked) {
-    return null;
-  }
-
   return (
     <Routes>
       <Route element={<Layout />}>
         {/* ⭐ 홈 */}
-        <Route
-          path="/"
-          element={tenantLoggedIn ? <Navigate to="/tenant" /> : <EntryPage />}
-        />
+        <Route path="/" element={<EntryPage />} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/login/success" element={<LoginSuccess />} />
@@ -71,7 +50,6 @@ function App() {
             path="buildings/:buildingId/notices/new"
             element={<NoticeCreate />}
           />
-          {/* ✅ 여기 수정됨 */}
           <Route
             path="buildings/:buildingId/notices/:noticeId"
             element={<NoticeDetail isAdmin={true} />}
@@ -91,8 +69,6 @@ function App() {
             path="buildings/:tenantBuildingId"
             element={<TenantBuildingDetail />}
           />
-
-          {/* ✅ 여기만 추가됨 (세입자 공지 상세) */}
           <Route
             path="buildings/:buildingId/notices/:noticeId"
             element={<NoticeDetail />}

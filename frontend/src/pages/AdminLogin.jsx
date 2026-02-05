@@ -2,11 +2,12 @@
 import "./AdminLogin.css";
 
 export default function AdminLogin() {
-  // Google OAuth 로그인 시작
   const handleGoogleLogin = () => {
+    const OAUTH_BASE = import.meta.env.VITE_OAUTH_BASE ?? "";
     window.location.href =
-      `/oauth2/authorization/google?prompt=select_account`;
+      `${OAUTH_BASE}/oauth2/authorization/google?prompt=select_account`;
   };
+
 
   return (
     <div className="admin-login-page">
