@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 
 import EntryPage from "./pages/EntryPage";
+import AboutPage from "./pages/about/AboutPage";
 import AdminLogin from "./pages/AdminLogin";
 import LoginSuccess from "./pages/LoginSuccess";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -32,6 +33,10 @@ function App() {
       <Route element={<Layout />}>
         {/* ⭐ 홈 */}
         <Route path="/" element={<EntryPage />} />
+
+        {/* ⭐ 서비스 소개 */}
+       <Route path="/about" element={<AboutPage />} />
+
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/login/success" element={<LoginSuccess />} />
